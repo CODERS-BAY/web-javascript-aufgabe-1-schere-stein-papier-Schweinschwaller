@@ -71,8 +71,11 @@
                 <img id="win5" src="./img/AI_boss.png" alt="winner fifth round">
             </div>
         </footer>
-
     </main>
+    <div id="falldown">
+        <img id="falldownimg" src="./img/aengstlich.png" alt="game result">
+        <h1 id="falldownstatement">somthing is wrong here</h1>
+    </div>
 </body>
 
 <script>
@@ -82,6 +85,8 @@
     paper.addEventListener("click", playerChoose);
     var scissor = document.getElementById("scissor");
     scissor.addEventListener("click", playerChoose);
+    var falldown = document.getElementById("falldown");
+    falldown.addEventListener("click", newGame);
     //##########################################################################
     // AI enemys
     var arrayAIs = [{
@@ -106,6 +111,10 @@
     var aiChoice = "nothing";
     var playerWins = 0;
     var playerDefeatedOpponent = 0;
+    var gameOn = true;
+
+    // set all ready for the game
+    newGame();
 
     function aiChoose() {
         let choise = Math.ceil(Math.random() * 3);
@@ -121,6 +130,7 @@
         }
     }
 
+    // set the text in aside
     function result(name) {
         switch (countGames) {
             case (1):
@@ -135,6 +145,7 @@
         }
     }
 
+    // settings for one RockPaperScissors
     function draw() {
         //result("Nobody");
         isDraw = true;
@@ -156,6 +167,50 @@
         document.getElementById("result").classList.add("resultDefeat");
     }
 
+    // Set Falldown
+    function bigGameVictory() {
+        document.getElementById("falldown").classList.remove("aiColor", "playerColor");
+        document.getElementById("falldown").classList.add("playerColor");
+        document.getElementById("falldownimg").src = "./img/grinsend.png";
+        document.getElementById("falldownstatement").innerText = "VICTORY";
+    }
+    function bigGameDefeat() {
+        document.getElementById("falldown").classList.remove("aiColor", "playerColor");
+        document.getElementById("falldown").classList.add("aiColor");
+        document.getElementById("falldownimg").src = "./img/aengstlich.png";
+        document.getElementById("falldownstatement").innerText = "DEFEAT";
+    }
+
+    // AI
+    function nextAI() {
+        if (aiIdx < arrayAIs.length) {
+            aiIdx++;
+            playerWins = 0;
+            //set next ai
+            document.getElementById("aiName").innerText = arrayAIs[aiIdx].name;
+            document.getElementById("aiImg").src = arrayAIs[aiIdx].img;
+            document.getElementById("aiQuote").innerText = arrayAIs[aiIdx].quote;
+            document.getElementById("firstTry").innerHTML = "";
+            document.getElementById("secoundTry").innerHTML = "";
+            document.getElementById("thirdTry").innerHTML = "";
+        }
+    }
+    function restAI() {
+        aiIdx = 0;
+        document.getElementById("win1").src = "./img/AI_ninja.png";
+        document.getElementById("win2").src = "./img/AI_dwarf.png";
+        document.getElementById("win3").src = "./img/AI_knight.png";
+        document.getElementById("win4").src = "./img/AI_viking.png";
+        document.getElementById("win5").src = "./img/AI_boss.png";
+
+        document.getElementById("aiName").innerText = arrayAIs[aiIdx].name;
+        document.getElementById("aiImg").src = arrayAIs[aiIdx].img;
+        document.getElementById("aiQuote").innerText = arrayAIs[aiIdx].quote;
+        document.getElementById("firstTry").innerHTML = "";
+        document.getElementById("secoundTry").innerHTML = "";
+        document.getElementById("thirdTry").innerHTML = "";
+    }
+
     // change the AI opponent 
     function changeAI() {
         if (playerWins >= 2) {
@@ -171,39 +226,29 @@
         }
         // after the player played again all 5 Opponents a Victory or Defeat will shown
         if ((playerDefeatedOpponent >= 3) && (aiIdx == arrayAIs.length - 1)) {
-            alert("VICTORY!");
+            //alert("VICTORY!");
+            bigGameVictory();
+            gameOn = false;
+            document.getElementById("falldown").classList.remove("falldownstart");
+            document.getElementById("falldown").classList.add("falldownanimation");
             playerDefeatedOpponent = 0;
+
         }
         else if (aiIdx == arrayAIs.length - 1) {
-            alert("DEFEAT!");
+            //alert("DEFEAT!");
+            bigGameDefeat();
+            gameOn = false;
+            document.getElementById("falldown").classList.remove("falldownstart");
+            document.getElementById("falldown").classList.add("falldownanimation");
             playerDefeatedOpponent = 0;
-        }
-        // reset
-        playerWins = 0;
 
-        //reset aiIdx and footer img
-        if (aiIdx >= arrayAIs.length) {
-            aiIdx = 0;
-            document.getElementById("win1").src = "./img/AI_ninja.png";
-            document.getElementById("win2").src = "./img/AI_dwarf.png";
-            document.getElementById("win3").src = "./img/AI_knight.png";
-            document.getElementById("win4").src = "./img/AI_viking.png";
-            document.getElementById("win5").src = "./img/AI_boss.png";
         }
-
-        //set next ai
-        aiIdx++;
-        document.getElementById("aiName").innerText = arrayAIs[aiIdx].name;
-        document.getElementById("aiImg").src = arrayAIs[aiIdx].img;
-        document.getElementById("aiQuote").innerText = arrayAIs[aiIdx].quote;
-        document.getElementById("firstTry").innerHTML = "";
-        document.getElementById("secoundTry").innerHTML = "";
-        document.getElementById("thirdTry").innerHTML = "";
-        countGames = 1;
+        nextAI();
     }
 
+    // remove all borders on ROCK, PAPER and Scissor
     function clearChoise() {
-        // remove all borders on ROCK, PAPER and Scissor
+        
         document.getElementById("playerRock").classList.remove("playerChoiceColor");
         document.getElementById("aiRock").classList.remove("aiChoiceColor");
         document.getElementById("playerPaper").classList.remove("playerChoiceColor");
@@ -213,39 +258,46 @@
     }
 
     function playerChoose(event) {
+        if (!gameOn) { return; }
+
         clearChoise();
-
         aiChoose();
-        if (event.target.id == "rock") {
-            // the choosen get a border.
-            document.getElementById("playerRock").classList.toggle("playerChoiceColor");
 
+        // the choosen get a border.
+        if (event.target.id == "rock") {
+            document.getElementById("playerRock").classList.toggle("playerChoiceColor");
             if (aiChoice == "paper") { defeat(); }
             else if (aiChoice == "scissor") { victory(); }
             else { draw(); }
-
         } else if (event.target.id == "paper") {
-            // the choosen get a border.
             document.getElementById("playerPaper").classList.toggle("playerChoiceColor");
-
             if (aiChoice == "rock") { victory(); }
             else if (aiChoice == "scissor") { defeat(); }
             else { draw(); }
-
         } else {
-            // the choosen get a border.
             document.getElementById("playerScissor").classList.toggle("playerChoiceColor");
-
             if (aiChoice == "rock") { defeat(); }
             else if (aiChoice == "paper") { victory(); }
             else { draw(); }
-
         }
         document.getElementById("result").style.display = "block";
 
         if (isDraw) { isDraw = false; }
         else { countGames++; }
-        if (countGames >= 4) { changeAI(); }
+        if (countGames >= 4) {
+            changeAI();
+            countGames = 1;
+        }
+    }
+
+    function newGame(event) {
+        countGames = 1;
+        gameOn = true;
+        aiIdx = 0;
+        document.getElementById("falldown").classList.remove("falldownanimation");
+        document.getElementById("falldown").classList.add("falldownstart");
+        clearChoise();
+        restAI();
     }
 </script>
 

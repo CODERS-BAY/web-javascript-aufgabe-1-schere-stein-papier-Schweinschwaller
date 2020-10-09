@@ -28,11 +28,11 @@ html {
 }
 
 .aiColor{
-    color: var(--ai-selection-color);
+    background-color: var(--ai-selection-color);
 }
 
 .playerColor{
-    color: var(--player-selection-color);
+    background-color: var(--player-selection-color);
 }
 /* #endregion global*/
 
@@ -228,3 +228,52 @@ footer img{
     color: rgb(240, 240, 240);
 }
 /* #enderegion result */
+
+/* #region falldown */
+
+#falldown{
+    width: 65%;
+    height: 25rem;
+    position: absolute;
+    left: 30%;
+    /*top: -20rem;*/
+    /*background-color: var(--main-section-color);*/
+    border-radius: 100px 100px 100px 100px;
+    box-shadow: 2px 2px 2px gray;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#falldown img{
+    max-width: 60%;
+    max-height: 60%;
+    margin: 1rem;
+    align-self: center;
+}
+
+#falldownstatement{
+    text-align: center;
+    font-style: italic;
+    display: flex;
+    justify-content: center;
+    color: rgb(240, 240, 240);
+    font-size: 400%;
+}
+
+.falldownanimation{
+    position: relative;
+    animation: falldownmove 5s 1 forwards;
+}
+
+@keyframes falldownmove {
+    from {top: -50%;}
+    to {top: 20%;}
+  }
+
+.falldownstart{
+    position: absolute;
+    top: -100%;
+}
+
+/* #endregion falldown */
