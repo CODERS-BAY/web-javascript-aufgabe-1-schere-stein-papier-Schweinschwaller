@@ -1,0 +1,230 @@
+/* #region global*/
+/* https://css-tricks.com/box-sizing/ */
+html {
+    box-sizing: border-box;
+}
+  *, *:before, *:after {
+    box-sizing: border-box;
+}
+
+:root {
+    --main-section-color: #45aaf2;
+    --ai-selection-color: #eb3b5a;
+    --player-selection-color: #a55eea;
+}
+.selectChoice div{
+    border: 5px solid none;
+    padding: 5px;
+}
+
+.playerChoiceColor{
+    border: 5px solid var(--player-selection-color);
+    padding: 5px;
+}
+#aiImg,
+.aiChoiceColor{
+    border: 5px solid var(--ai-selection-color);
+    padding: 5px;
+}
+
+.aiColor{
+    color: var(--ai-selection-color);
+}
+
+.playerColor{
+    color: var(--player-selection-color);
+}
+/* #endregion global*/
+
+/* #region body */
+body{
+    background-color: rgb(240, 240, 240);
+    color: rgb(50, 50, 50);
+}
+/* #endregion body */
+
+/* #region main */
+main{
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: auto auto auto;
+    grid-template-areas: 
+    "head head"
+    "status game"
+    "status result"
+    "footer footer";
+}
+
+.wide{
+    display: initial;
+}
+
+.mobil{
+    display: none;
+}
+/* #endregion main */
+
+/* #region header */
+header{
+    grid-area: head;
+}
+
+header{
+    background-color: var(--main-section-color);
+    max-width: 100%;
+
+    margin-bottom: 1rem;
+    border-radius: 10px 10px 10px 10px;
+    box-shadow: 2px 2px 2px gray;
+}
+
+header h1{
+    font-size: 2.5em;
+    font-size: 400%;
+    font-style: italic;
+    font-weight: bold;
+    
+    color: white;
+
+    text-shadow: 0px 0px 15px rgba(255, 255, 255, 0.6);
+    text-align: center;
+    text-transform: uppercase;
+    
+    line-height: 1.1em;
+    letter-spacing: 0.1em;
+    word-spacing: 1em;
+
+    margin: 0;
+    border: 0px;
+    padding: 0;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+
+    clear: both;
+    display: flex;
+    justify-content: center;
+
+}
+/* #endregion header */
+
+/* #region aside */
+aside {
+    grid-area: status;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    border-right: 1px solid rgb(10, 10, 10);
+    min-height: 30rem;
+}
+
+aside img{
+    max-width: 100%;
+    max-height: 30%;
+    border-radius: 10px;
+}
+
+#aiPortrait img{
+    max-width: 50%;
+}
+
+#aiName{
+    font-size: 200%;
+    text-decoration: underline;
+}
+
+#aiQuote{
+    font-style: italic;
+    font-size: 150%;
+}
+
+#firstTry,
+#secoundTry,
+#thirdTry{
+    font-size: 200%;
+}
+/* #endregion aside */
+
+/* #region footer */
+footer{
+    font-size: 120%;
+
+    background-color: var(--main-section-color);
+    color: rgb(240, 240, 240);
+    text-align: center;
+
+    max-width: 100%;
+
+    margin: 0rem;   
+    margin-top: 1rem;
+    padding: 0rem;
+
+    clear: both;
+    display: flex;
+    justify-content: center;
+
+    border-radius: 10px 10px 10px 10px;
+    box-shadow: 2px 2px 2px gray;
+
+    grid-area: footer;
+    /*display: none;*/
+}
+
+footer img{
+    max-height: 80%;
+    max-width: 10rem;
+    margin-top: 1.5rem;
+}
+/* #endregion footer */
+
+/* #region game */
+
+.rockpaperscissors{
+    min-height: 30rem;
+}
+
+.selectChoice{
+    clear: both;
+    display: flex;
+    justify-content: space-evenly;
+    border: none;
+    margin-bottom: 3rem;
+    margin-top: 3rem;
+}
+
+.selectChoice button{
+    background-color: transparent;
+}
+.selectChoice img{
+    max-width: 15rem;
+}
+/* #endregion game */
+
+/* #region result */
+.result{
+    grid-area: result;
+}
+
+#result{
+    margin: 0.5rem;
+    border-radius: 10px 10px 10px 10px;
+    box-shadow: 2px 2px 2px gray;
+    color: rgb(240, 240, 240);
+
+    text-align: center;
+    font-size: 400%;
+}
+
+.resultVictory{
+    background-color: var(--player-selection-color);
+    color: rgb(240, 240, 240);
+}
+.resultDefeat{
+    background-color: var(--ai-selection-color);
+    color: rgb(240, 240, 240);
+}
+.resultDraw{
+    background-color: var(--main-section-color);
+    color: rgb(240, 240, 240);
+}
+/* #enderegion result */

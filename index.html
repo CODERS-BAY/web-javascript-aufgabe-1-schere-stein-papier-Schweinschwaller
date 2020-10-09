@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/styles.css" rel="stylesheet" />
+    <title>Rock Paper Scissors by Georg Schweinschwaller</title>
+</head>
+
+<body>
+    <main>
+        <header>
+            <h1>Rock Paper Scissors</h1>
+        </header>
+
+        <article class="rockpaperscissors">
+            <section class="selectChoice">
+                <div id="aiRock">
+                    <div id="playerRock">
+                        <img id="rock" src="./img/rock.png" alt="Rock">
+                    </div>
+                </div>
+                <div id="aiPaper">
+                    <div id="playerPaper">
+                        <img id="paper" src="./img/paper.png" alt="Paper">
+                    </div>
+                </div>
+                <div id="aiScissor">
+                    <div id="playerScissor">
+                        <img id="scissor" src="./img/scissors.png" alt="Scissors">
+                    </div>
+                </div>
+            </section>
+            <section class="result">
+                <h1 id="result" style="display: none;">Victory</h1>
+            </section>
+        </article>
+
+        <aside>
+            <div id="aiPortrait">
+                <h1 id="aiName">Ninja</h1>
+                <img id="aiImg" src="./img/AI_ninja.png" alt="ai enemy">
+                <p id="aiQuote">&#34;Nobody outsmarts a ninja&#34;</p>
+            </div>
+            <div>
+                <table>
+                    <tr>
+                        <td>WINNER:</td>
+                        <td id="firstTry"> </td>
+                    </tr>
+                    <tr>
+                        <td>WINNER:</td>
+                        <td id="secoundTry"> </td>
+                    </tr>
+                    <tr>
+                        <td>WINNER:</td>
+                        <td id="thirdTry"> </td>
+                    </tr>
+                </table>
+
+            </div>
+        </aside>
+
+        <footer>
+            <div>
+                <img id="win1" src="./img/AI_ninja.png" alt="winner first round">
+                <img id="win2" src="./img/AI_dwarf.png" alt="winner secound round">
+                <img id="win3" src="./img/AI_knight.png" alt="winner third round">
+                <img id="win4" src="./img/AI_viking.png" alt="winner fourth round">
+                <img id="win5" src="./img/AI_boss.png" alt="winner fifth round">
+            </div>
+        </footer>
+
+    </main>
+</body>
+
+<script>
+    var rock = document.getElementById("rock");
+    rock.addEventListener("click", playerChoose);
+    var paper = document.getElementById("paper");
+    paper.addEventListener("click", playerChoose);
+    var scissor = document.getElementById("scissor");
+    scissor.addEventListener("click", playerChoose);
+    //##########################################################################
+    // AI enemys
+    var arrayAIs = [{
+        name: "Ninja",
+        img: "./img/AI_ninja.png",
+        quote: "\"Nobody outsmarts a ninja!\""
+    }];
+
+    var ai = { name: "Dwarf", img: "./img/AI_dwarf.png", quote: "\"We dwarfs invented the game!\"" };
+    arrayAIs.push(ai);
+    var ai = { name: "Knight", img: "./img/AI_knight.png", quote: "\"Nobody beats me!\"" };
+    arrayAIs.push(ai);
+    var ai = { name: "Viking", img: "./img/AI_viking.png", quote: "\"I always win!\"" };
+    arrayAIs.push(ai);
+    var ai = { name: "BOSS", img: "./img/AI_boss.png", quote: "\"I AM INVINCIBILE!\"" };
+    arrayAIs.push(ai);
+
+    //##########################################################################
+    var isDraw = false;
+    var aiIdx = 0;
+    var countGames = 1;
+    var aiChoice = "nothing";
+    var playerWins = 0;
+    var playerDefeatedOpponent = 0;
+
+    function aiChoose() {
+        let choise = Math.ceil(Math.random() * 3);
+        if (choise == 1) {
+            aiChoice = "rock";
+            document.getElementById("aiRock").classList.toggle("aiChoiceColor");
+        } else if (choise == 2) {
+            aiChoice = "paper";
+            document.getElementById("aiPaper").classList.toggle("aiChoiceColor");
+        } else {
+            aiChoice = "scissor";
+            document.getElementById("aiScissor").classList.toggle("aiChoiceColor");
+        }
+    }
+
+    function result(name) {
+        switch (countGames) {
+            case (1):
+                document.getElementById("firstTry").innerHTML = name;
+                break;
+            case (2):
+                document.getElementById("secoundTry").innerHTML = name;
+                break;
+            case (3):
+                document.getElementById("thirdTry").innerHTML = name;
+                break;
+        }
+    }
+
+    function draw() {
+        //result("Nobody");
+        isDraw = true;
+        document.getElementById("result").innerText = "Draw";
+        document.getElementById("result").classList.remove("resultVictory", "resultDefeat", "resultDraw");
+        document.getElementById("result").classList.add("resultDraw");
+    }
+    function victory() {
+        playerWins++;
+        result("Player");
+        document.getElementById("result").innerText = "Victory";
+        document.getElementById("result").classList.remove("resultVictory", "resultDefeat", "resultDraw");
+        document.getElementById("result").classList.add("resultVictory");
+    }
+    function defeat() {
+        result(arrayAIs[aiIdx].name);
+        document.getElementById("result").innerText = "Defeat";
+        document.getElementById("result").classList.remove("resultVictory", "resultDefeat", "resultDraw");
+        document.getElementById("result").classList.add("resultDefeat");
+    }
+
+    // change the AI opponent 
+    function changeAI() {
+        if (playerWins >= 2) {
+            playerDefeatedOpponent++;
+            // the portrait of the ai in the footer get changed
+            switch (aiIdx) {
+                case (0): document.getElementById("win1").src = "./img/you_win.png"; break;
+                case (1): document.getElementById("win2").src = "./img/you_win.png"; break;
+                case (2): document.getElementById("win3").src = "./img/you_win.png"; break;
+                case (3): document.getElementById("win4").src = "./img/you_win.png"; break;
+                case (4): document.getElementById("win5").src = "./img/victory.png"; break;
+            }
+        }
+        // after the player played again all 5 Opponents a Victory or Defeat will shown
+        if ((playerDefeatedOpponent >= 3) && (aiIdx == arrayAIs.length - 1)) {
+            alert("VICTORY!");
+            playerDefeatedOpponent = 0;
+        }
+        else if (aiIdx == arrayAIs.length - 1) {
+            alert("DEFEAT!");
+            playerDefeatedOpponent = 0;
+        }
+        // reset
+        playerWins = 0;
+
+        //reset aiIdx and footer img
+        if (aiIdx >= arrayAIs.length) {
+            aiIdx = 0;
+            document.getElementById("win1").src = "./img/AI_ninja.png";
+            document.getElementById("win2").src = "./img/AI_dwarf.png";
+            document.getElementById("win3").src = "./img/AI_knight.png";
+            document.getElementById("win4").src = "./img/AI_viking.png";
+            document.getElementById("win5").src = "./img/AI_boss.png";
+        }
+
+        //set next ai
+        aiIdx++;
+        document.getElementById("aiName").innerText = arrayAIs[aiIdx].name;
+        document.getElementById("aiImg").src = arrayAIs[aiIdx].img;
+        document.getElementById("aiQuote").innerText = arrayAIs[aiIdx].quote;
+        document.getElementById("firstTry").innerHTML = "";
+        document.getElementById("secoundTry").innerHTML = "";
+        document.getElementById("thirdTry").innerHTML = "";
+        countGames = 1;
+    }
+
+    function clearChoise() {
+        // remove all borders on ROCK, PAPER and Scissor
+        document.getElementById("playerRock").classList.remove("playerChoiceColor");
+        document.getElementById("aiRock").classList.remove("aiChoiceColor");
+        document.getElementById("playerPaper").classList.remove("playerChoiceColor");
+        document.getElementById("aiPaper").classList.remove("aiChoiceColor");
+        document.getElementById("playerScissor").classList.remove("playerChoiceColor");
+        document.getElementById("aiScissor").classList.remove("aiChoiceColor");
+    }
+
+    function playerChoose(event) {
+        clearChoise();
+
+        aiChoose();
+        if (event.target.id == "rock") {
+            // the choosen get a border.
+            document.getElementById("playerRock").classList.toggle("playerChoiceColor");
+
+            if (aiChoice == "paper") { defeat(); }
+            else if (aiChoice == "scissor") { victory(); }
+            else { draw(); }
+
+        } else if (event.target.id == "paper") {
+            // the choosen get a border.
+            document.getElementById("playerPaper").classList.toggle("playerChoiceColor");
+
+            if (aiChoice == "rock") { victory(); }
+            else if (aiChoice == "scissor") { defeat(); }
+            else { draw(); }
+
+        } else {
+            // the choosen get a border.
+            document.getElementById("playerScissor").classList.toggle("playerChoiceColor");
+
+            if (aiChoice == "rock") { defeat(); }
+            else if (aiChoice == "paper") { victory(); }
+            else { draw(); }
+
+        }
+        document.getElementById("result").style.display = "block";
+
+        if (isDraw) { isDraw = false; }
+        else { countGames++; }
+        if (countGames >= 4) { changeAI(); }
+    }
+</script>
+
+</html>
